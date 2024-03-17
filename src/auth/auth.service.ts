@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { UsersService } from '../users/users.service';
@@ -39,13 +43,13 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto): Promise<AccessToken> {
-    const existingUser = await this.usersService.findOneByEmail(
-      registerDto.email,
-    );
-
-    if (existingUser) {
-      throw new BadRequestException('email already exists');
-    }
+    // const existingUser = await this.usersService.findOneByEmail(
+    //   registerDto.email,
+    // );
+    //
+    // if (existingUser) {
+    //   throw new BadRequestException('email already exists');
+    // }
 
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
     const newUser: { password: string; email: string; username: string } = {
